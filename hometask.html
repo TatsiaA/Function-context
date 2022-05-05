@@ -78,34 +78,25 @@
 /******  TODO: Fix event handlers. Do not touch functions' bodies ******/
 
 component.attachEvent('click', function(eventNameForComponentState) {
-    customNameSpace.countButtonClicks();
-    eventNameForComponentState = 'clickedCount';
+    this.countButtonClicks();
     component.state[eventNameForComponentState]++;
-  });
+  }.bind(customNameSpace, 'clickedCount'));
 
-  component.attachEvent('contextmenu', function(event, eventNameForComponentState) {
+  component.attachEvent('contextmenu', function(eventNameForComponentState, event) {
     event.preventDefault();
     let contextMenu = document.createElement('p');
     contextMenu.innerText = 'ContextMenu was here';
-    contextMenu.id = 'context-menu';
-    let oldContextMenu = document.getElementById('context-menu');
-    if(oldContextMenu) {
-      event.target.parentElement.removeChild(oldContextMenu);
-    } else {
-      event.target.parentElement.appendChild(contextMenu);
-    }
-    eventNameForComponentState = 'rightClickedCount';
+    event.target.parentElement.appendChild(contextMenu);
     component.state[eventNameForComponentState]++;
-  });
+  }.bind(this, 'rightClickedCount'));
 
   component.attachEvent('mouseover', function(eventNameForComponentState) {
-    let currentColor = this.getAttribute('style');
+    let currentColor = this.element.getAttribute('style');
     let color = currentColor === 'color: red' ?
       'color: green' : 'color: red';
-    this.setAttribute('style', color);
-    eventNameForComponentState = 'hoveredCount';
-    component.state[eventNameForComponentState]++;
-  });
+    this.element.setAttribute('style', color);
+    this.state[eventNameForComponentState]++;
+  }.bind(component, 'hoveredCount'));
 
   component.render('out');
 </script>
