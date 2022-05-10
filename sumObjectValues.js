@@ -9,7 +9,7 @@ function sumObjectValues() {
   for (let arg of arguments) {
     values = values.concat(Object.values(arg)).filter(el => typeof el === "number");
   }
-  return [].reduce.call(values, add);
+  return [].reduce.apply(values, [add]);
 }
 
 let object = {
